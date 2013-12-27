@@ -2,7 +2,7 @@ import os
 import sqlite3
 import tempfile
 import shutil
-from grass.script import run_command
+import grass.script
 
 class MapsetError(Exception):
     def __init__(self, value):
@@ -23,6 +23,10 @@ class Mapset(object):
         self.gdata = gdata
         self.sqlitedb = os.path.join(gdata, location, mapset, 'sqlite.db')
         self.set_mapset(mapset, location, gdata, create)
+
+        self.run = grass.script.run_command
+        self.read = grass.script.read_command
+        self.mapcalc = grass.script.mapcalc
     
     def __enter__(self):
         return self
@@ -64,12 +68,12 @@ class Mapset(object):
             prev_sqlitedb = self.sqlitedb
             self.sqlitedb = os.path.join(self.gdata, self.location, self.mapset, 'sqlite.db')
             if create:
-                err = run_command('g.mapset', 'c', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
+                err = grass.script.run_command('g.mapset', 'c', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
                 if err:
                     #for some reason, sometimes doesn't work the first time
-                    err = run_command('g.mapset', 'c', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
+                    err = grass.script.run_command('g.mapset', 'c', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
             else:
-                err = run_command('g.mapset', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
+                err = grass.script.run_command('g.mapset', gisdbase=self.gdata, location=self.location, mapset=self.mapset)
             if err:
                 self.mapset = prev_mapset
                 self.location = prev_location
@@ -77,8 +81,8 @@ class Mapset(object):
                 self.sqlitedb = prev_sqlitedb
                 raise MapsetError('Unable to change mapset to: {0}/{1}/{2}'.format(gdata,location,mapset))
             self._confirm_mapset(self.mapset, self.location, self.gdata)
-            run_command('g.region','d')
-        run_command('db.connect',driver='sqlite',database=self.sqlitedb)
+            grass.script.run_command('g.region','d')
+        grass.script.run_command('db.connect',driver='sqlite',database=self.sqlitedb)
 
     def get_db_connection(self):
         self.conn = sqlite3.connect(self.sqlitedb)
