@@ -19,9 +19,9 @@ GDATA, GISRC, and others.  It manages the lock files that prevent a single
 mapset from being written two by two users simultaneously.
 
 ### Use ###
-from grassenv import Mapset
 
 ```python
+from grassenv import Mapset
 m = Mapset(location='location_name', mapset='PERMANENT', gdata='grassdata')
 m.run('g.region', 'p')
 ```
@@ -45,6 +45,7 @@ Access vector map attribute tables direcly through the sqlite3 module
 ### Use ###
 
 ```python
+from grassenv import Grassdb
 db = Grassdb(location='location_name', mapset='PERMANENT', gdata='grassdata')
 db.get_columns('vector_map')
 db.get_data('column_name', 'vector_map', 'cat')
@@ -53,7 +54,7 @@ db.close()
 
 ## FYI ##
 
-* Hacky! No guarentees to set all environment variables properly, but works for
+* Hacky! No guarantees to set all environment variables properly, but works for
   me
 * Forces sqlite3 database for vector maps
 * Leaves a mess behind in /tmp
