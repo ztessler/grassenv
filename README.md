@@ -19,15 +19,17 @@ GDATA, GISRC, and others.  It manages the lock files that prevent a single
 mapset from being written two by two users simultaneously.
 
 *** Use
+from grassenv import Mapset, grun, gread
 
 m = Mapset(location='location_name', mapset='PERMANENT', gdata='grassdata')
-m.run('g.region', 'p')
+grun('g.region', 'p')
 
 or
 
 with Mapset(location='location_name', mapset='PERMANENT', gdata='grassdata') as
 m:
-    m.run('g.region', 'p')
+    grun('g.region', 'p')
+    output = gread('g.region', 'p')
 
 The context manager form cleans up the environment variables and lockfiles when
 the block ends.
