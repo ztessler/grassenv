@@ -1,4 +1,4 @@
-*Grassenv
+* Grassenv *
 
 Grassenv provides classes for managing a GRASS GIS environment from Python,
 without first starting a GRASS session.
@@ -8,17 +8,17 @@ sqlite databases for vector map attribute tables.
 
 There are two classes:
 
-*Mapset
-*Grassdb
+* Mapset
+* Grassdb
 
-**Mapset
+** Mapset **
 
 The Mapset class is a context manager that setups and tears down the
 environment variables that GRASS modules expect, such as LOCATION, MAPSET,
 GDATA, GISRC, and others.  It manages the lock files that prevent a single
 mapset from being written two by two users simultaneously.
 
-***Use
+*** Use ***
 from grassenv import Mapset
 
 ```python
@@ -38,11 +38,11 @@ m:
 The context manager form cleans up the environment variables and lockfiles when
 the block ends.
 
-**Grassdb
+** Grassdb **
 
 Access vector map attribute tables direcly through the sqlite3 module
 
-***Use
+*** Use ***
 
 ```python
 db = Grassdb(location='location_name', mapset='PERMANENT', gdata='grassdata')
@@ -51,10 +51,10 @@ db.get_data('column_name', 'vector_map', 'cat')
 db.close()
 ```
 
-**FYI
+** FYI **
 
-*Hacky! No guarentees to set all environment variables properly, but works for
+* Hacky! No guarentees to set all environment variables properly, but works for
   me
-*Forces sqlite3 database for vector maps
-*Leaves a mess behind in /tmp
-*Default location, mapset, grassdata directory should probably be edited
+* Forces sqlite3 database for vector maps
+* Leaves a mess behind in /tmp
+* Default location, mapset, grassdata directory should probably be edited
